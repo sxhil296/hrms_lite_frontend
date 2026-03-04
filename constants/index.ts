@@ -47,10 +47,6 @@ export const Departments = [
 
 export const navItems = [
   {
-    name: "Dashboard",
-    href: "/dashboard",
-  },
-  {
     name: "Employees",
     href: "/employees",
   },

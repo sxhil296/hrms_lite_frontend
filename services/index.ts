@@ -128,3 +128,17 @@ export const getAllAttendance = async (page?: number, limit?: number, date?: str
   }
 }
 
+// GET EMPLOYEE BY EMPLOYEE ID
+export const getEmployeeById = async (employee_id: string) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/employees/${employee_id}`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      return errorData;
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching employee:", error);
+    throw error;
+  }
+}

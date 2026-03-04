@@ -9,10 +9,10 @@ interface DatePickerProps {
     date: Date | undefined | string;
     setDate: (date: Date | undefined) => void;
     triggerClassName?: string;
-    maxDate?: Date;
+   disabled?: { after: Date };
 }
 
-    export const DatePicker = ({date, setDate, triggerClassName, maxDate }: DatePickerProps) => {
+    export const DatePicker = ({date, setDate, triggerClassName, disabled }: DatePickerProps) => {
     return (
         <Popover>
         <PopoverTrigger asChild>
@@ -28,6 +28,7 @@ interface DatePickerProps {
             selected={date ? new Date(date) : undefined}
             onSelect={setDate}
             initialFocus
+            disabled={disabled}
         
           />
         </PopoverContent>

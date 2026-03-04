@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { AlertPopup } from "../general/AlertPopup";
 import { Dropdown } from "../general/Dropdown";
+import { useRouter } from "next/navigation";
 
 const LIMIT = 10;
 
@@ -36,6 +37,7 @@ export default function EmployeeTable() {
   const [totalPages, setTotalPages] = useState(1);
 
   const [selected, setSelected] = useState<string[]>([]);
+  const router = useRouter(); 
 
   // Debounce Search (300ms)
   useEffect(() => {
@@ -202,18 +204,18 @@ if(res.success) {
               </TableRow>
             ) : (
               employees.map((emp) => (
-                <TableRow key={emp.id}>
-                  <TableCell>
+                <TableRow key={emp.id} className="cursor-pointer hover:bg-amber-100" >
+                  <TableCell  onClick={() => router.push(`/employees/${emp.employee_id}`)}>
                     <Checkbox
                     className="cursor-pointer ring-0 focus:ring-0"
                       checked={selected.includes(emp.employee_id)}
                       onCheckedChange={() => toggleSelect(emp.employee_id)}
                     />
                   </TableCell>
-                  <TableCell>{emp.employee_id}</TableCell>
-                  <TableCell className="font-medium">{emp.full_name}</TableCell>
-                  <TableCell>{emp.email}</TableCell>
-                  <TableCell>{emp.department}</TableCell>
+                  <TableCell  onClick={() => router.push(`/employees/${emp.employee_id}`)}>{emp.employee_id}</TableCell>
+                  <TableCell  onClick={() => router.push(`/employees/${emp.employee_id}`)}>{emp.full_name}</TableCell>
+                  <TableCell  onClick={() => router.push(`/employees/${emp.employee_id}`)}>{emp.email}</TableCell>
+                  <TableCell  onClick={() => router.push(`/employees/${emp.employee_id}`)}>{emp.department}</TableCell>
                   <TableCell className="text-right">
                     <AlertDialog  >
                       

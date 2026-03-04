@@ -1,4 +1,3 @@
-"use client";
 
 import {
   Table,
@@ -9,74 +8,63 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useEffect, useState } from "react";
+
 import { Attendance } from "@/interfaces";
-import { getAllAttendance } from "@/services";
+
 import { Input } from "../ui/input";
 import { Dropdown } from "../general/Dropdown";
 import { AttendanceStatus } from "@/constants";
 import { Skeleton } from "../ui/skeleton";
 import { DatePicker } from "../general/DatePicker";
-import { format } from "date-fns";
 import { Badge } from "../ui/badge";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
-export const AttendanceTable = () => {
-  const [attendance, setAttendance] = useState<Attendance[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+interface AttendanceTableProps {
+  attendance: Attendance[];
+  loading: boolean;
+  error: string | null;
 
-  const [searchInput, setSearchInput] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  page: number;
+  setPage: (page: number) => void;
+  totalPages: number;
 
-  const [status, setStatus] = useState("");
-  const [date, setDate] = useState<Date | undefined>();
+  limit: number;
+  setLimit: (limit: number) => void;
 
-  const fetchAttendance = async () => {
-    setLoading(true);
-    setError(null);
+  searchInput: string;
+  setSearchInput: (value: string) => void;
 
-    try {
-      const res = await getAllAttendance(
-        page,
-        limit,
-        date ? format(date, "yyyy-MM-dd") : "",
-        debouncedSearch,
-        status
-      );
+  status: string;
+  setStatus: (value: string) => void;
 
-      if (!res.success) {
-        setError(res.message);
-        return;
-      }
+  date: Date | undefined;
+  setDate: (date: Date | undefined) => void;
+}
 
-      setAttendance(res.data);
-    } catch (error) {
-      setError("Failed to fetch attendance");
-    } finally {
-      setLoading(false);
-    }
-  };
+export const AttendanceTable = ({
+  attendance,
+  loading,
+  error,
 
-  ///Debounce Search 
+  page,
+  setPage,
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(searchInput);
-      setPage(1);
-    }, 300);
+  totalPages,
 
-    return () => clearTimeout(handler);
-  }, [searchInput]);
+  searchInput,
+  setSearchInput,
 
-  //Fetch Data 
+  status,
+  setStatus,
 
-  useEffect(() => {
-    fetchAttendance();
-  }, [page, limit, debouncedSearch, status, date]);
+  date,
+  setDate,
+}: AttendanceTableProps ) => {
+const router = useRouter();
+ 
 
   return (
     <div className="space-y-4">
@@ -100,15 +88,14 @@ export const AttendanceTable = () => {
 
 
 
-          <Dropdown value={status} setValue={setStatus} options={AttendanceStatus} />
+          <Dropdown value={status} setValue={setStatus} options={AttendanceStatus} placeholder="Filter By Status" />
         </div>
       </div>
 
   
 
-     
-
-      <Table>
+     <div className="border rounded-xl overflow-hidden bg-white">
+         <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Employee ID</TableHead>
@@ -133,10 +120,10 @@ export const AttendanceTable = () => {
             </TableRow>
           ) : (
             attendance.map((attend) => (
-              <TableRow key={`${attend.employee_id}-${attend.date}`}>
+              <TableRow key={`${attend.employee_id}-${attend.date}`} className="cursor-pointer hover:bg-amber-100" onClick={() => router.push(`/employees/${attend.employee_id}`)}>
                 <TableCell>{attend.employee_id}</TableCell>
-                <TableCell>{attend.employee_name}</TableCell>
-                <TableCell>{attend.date}</TableCell>
+                <TableCell>{attend.employee.full_name}</TableCell>
+                <TableCell>{formatDate(attend.date)}</TableCell>
                 <TableCell>
                   <Badge
                   className={cn(
@@ -155,6 +142,33 @@ export const AttendanceTable = () => {
           )}
         </TableBody>
       </Table>
+     </div>
+        {/* Pagination */}
+           <div className="flex justify-end items-center gap-4">
+             <Button
+               variant="outline"
+               size="sm"
+               disabled={page === 1 || loading}
+               onClick={() => setPage(page - 1)}
+             >
+               Previous
+             </Button>
+     
+             <span className="text-sm text-muted-foreground">
+               Page {page} of {totalPages || 1}
+             </span>
+     
+             <Button
+               variant="outline"
+               size="sm"
+               disabled={page === totalPages || loading}
+               onClick={() => setPage(page + 1  )}
+             >
+               Next
+             </Button>
+           </div>
+
+   
     </div>
   );
 };

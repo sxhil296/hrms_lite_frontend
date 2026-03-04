@@ -25,8 +25,8 @@ export default function Home() {
 
       <div className="flex justify-between items-center gap-6">
         <Button className="rounded-full mt-6 w-[150px]" asChild size={"lg"}>
-          <Link href="/dashboard" className="font-medium text-lg">
-            Dashboard
+          <Link href="/employees" className="font-medium text-lg">
+            View Employees
           </Link>
         </Button>
         <Button
@@ -35,8 +35,8 @@ export default function Home() {
           asChild
           size={"lg"}
         >
-          <Link href="/employee" className="font-medium text-lg">
-            View Employees
+          <Link href="/employees/attendance" className="font-medium text-lg">
+            View Attendance
           </Link>
         </Button>
       </div>

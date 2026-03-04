@@ -1,20 +1,10 @@
 import EmployeeTable from "@/components/employee/EmployeeTable";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { BreadCrumbCustom } from "@/components/general/BreadCrumbCustom";
 
 export default function EmployeePage() {
   return (
-    <div className="p-6">
-      <Breadcrumb className="mb-10">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/employees">Employees</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Employee Directory</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <div className="p-6 space-y-10">
+    <BreadCrumbCustom title="Employees" href="/employees" currentTitle="Employee Directory"    />
       <EmployeeTable />
     </div>
   );
