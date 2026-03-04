@@ -1,23 +1,5 @@
+import { navItems } from "@/constants";
 import Link from "next/link";
-
-const navItems = [
-  {
-    name: "Dashboard",
-    href: "/dashboard",
-  },
-  {
-    name: "Employees",
-    href: "/employees",
-  },
-  {
-    name: "Add Employee",
-    href: "/add-employee",
-  },
-  {
-    name: "Attendance",
-    href: "/attendance",
-  },
-];
 
 export const Header = () => {
   return (

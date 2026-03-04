@@ -15,7 +15,8 @@ export const getAllEmployees = async (
     if (params.toString()) url += `?${params.toString()}`;
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error("Failed to fetch employees");
+        const errorData = await response.json();
+        return errorData;
     }
     return await response.json();
   } catch (error) {
@@ -24,18 +25,29 @@ export const getAllEmployees = async (
   }
 };
 
-// DELETE EMPLOYEE BY ID
-export const deleteEmployee = async (id: number) => {
+// ADD NEW EMPLOYEE
+export const createEmployee = async (data: {
+  full_name: string;
+  email: string;
+  department: string;
+}) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/employees/${id}/`, {
-      method: "DELETE",
+    const response = await fetch(`${API_BASE_URL}/employees`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
+
     if (!response.ok) {
-      throw new Error("Failed to delete employee");
+      const errorData = await response.json();
+      return errorData;
     }
-    return true;
+
+    return await response.json();
   } catch (error) {
-    console.error("Error deleting employee:", error);
+    console.error("Error creating employee:", error);
     throw error;
   }
-};
+}
