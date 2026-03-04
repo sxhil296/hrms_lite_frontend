@@ -133,7 +133,7 @@ if(res.success) {
     <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
 
       <Input
-        placeholder="Search employees..."
+        placeholder="Search employees by ID or name"
         className="w-full sm:max-w-sm"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}

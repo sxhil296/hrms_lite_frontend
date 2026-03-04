@@ -76,7 +76,7 @@ const router = useRouter();
     <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 w-full">
 
       <Input
-        placeholder="Search employees..."
+        placeholder="Search employees by ID"
         className="w-full sm:max-w-sm"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
