@@ -11,22 +11,23 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
-import { getAllEmployees } from "@/services";
+import { getAllEmployees, deleteEmployees } from "@/services";
 import { Employee } from "@/interfaces";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
+import { Plus, Trash2 } from "lucide-react";
+import { Departments } from "@/constants";
+import { toast } from "sonner";
+import Link from "next/link";
+import { AlertPopup } from "../general/AlertPopup";
+import { Dropdown } from "../general/Dropdown";
 
 const LIMIT = 10;
 
 export default function EmployeeTable() {
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [department, setDepartment] = useState("");
 
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -50,24 +51,61 @@ export default function EmployeeTable() {
   const fetchEmployees = async () => {
     try {
       setLoading(true);
-      const res = await getAllEmployees(search, page, LIMIT);
+      if(department === "all") {
+        setDepartment("");
+      }
+      const res = await getAllEmployees(search, page, LIMIT, department);
 
-      setEmployees(res.data);
-      setTotalPages(res?.totalPages);
+if(res.success) {
+  setEmployees(res.data);
+  setTotalPages(res?.meta?.totalPages);
+} else {
+  setEmployees([]);
+  setTotalPages(1);
+  toast.dismiss();
+  toast.error(res.message || "Failed to fetch employees");
+}
     } catch (error) {
-      console.error("Failed to fetch employees:", error);
+      toast.dismiss();
+      toast.error("Failed to fetch employees");
     } finally {
       setLoading(false);
     }
   };
 
+  // handle  delete
+  const handleDelete = async (ids?: string[]) => {
+    try {
+      setLoading(true);
+      const res = await deleteEmployees(ids || selected);
+      if(res.success) {
+        toast.dismiss();
+        toast.success(res.message);
+        setSelected([]);
+        fetchEmployees();
+        toast.dismiss();
+        toast.success("Deleted successfully!");
+      } else {
+        toast.dismiss();
+        toast.error(res.message);
+      }
+    } catch (error) {
+      toast.dismiss();
+      toast.error("Failed to delete employees");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
+
   useEffect(() => {
     fetchEmployees();
-  }, [page, search]);
+  }, [page, search, department]);
 
-  const toggleSelect = (id: string) => {
+  const toggleSelect = (employee_id: string) => {
     setSelected((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+      prev.includes(employee_id) ? prev.filter((item) => item !== employee_id) : [...prev, employee_id],
     );
   };
 
@@ -75,21 +113,56 @@ export default function EmployeeTable() {
     if (selected.length === employees.length) {
       setSelected([]);
     } else {
-      setSelected(employees.map((emp) => emp.id));
+      setSelected(employees.map((emp) => emp.employee_id));
     }
   };
 
-  console.log("totalPages", totalPages);
+
+  console.log("selected", selected);
 
   return (
     <div className="space-y-4">
-      {/* search by name, email or empId */}
+    <div className="w-full flex justify-between items-center">
+       <div className="flex items-center gap-4">
+       {/* search by name, email or empId */}
       <Input
         placeholder="Search employees..."
         className="max-w-sm"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
       />
+      {/* department filter */}
+   
+      <Dropdown
+        value={department}
+        setValue={setDepartment}
+        options={Departments} 
+        placeholder="Filter by Department"
+        allOptionText="All Departments"
+      />
+     </div>
+     {/* delete selected  */}
+       <div className="flex items-center gap-4">
+     {selected.length > 0 && (
+    
+     <AlertPopup onConfirm={() => {
+                    handleDelete();
+                    setSelected([]);
+                  }} title="Are you sure?" description="This action cannot be undone. This will permanently delete employee details from the database." confirmText="Delete" cancelText="Cancel" /> 
+     
+     )}
+     <Button variant="outline" size="icon" asChild className="cursor-pointer">
+      <Link href="/add-employee">
+        <Plus className="h-4 w-4" />
+      </Link>
+     </Button>
+     <Button variant="outline" size="default" asChild className="cursor-pointer">
+      <Link href="/employees/attendance">
+        Mark Attendance
+      </Link>
+     </Button>
+      </div>
+    </div>
 
       {/*Table */}
       <div className="border rounded-xl overflow-hidden bg-white">
@@ -132,8 +205,9 @@ export default function EmployeeTable() {
                 <TableRow key={emp.id}>
                   <TableCell>
                     <Checkbox
-                      checked={selected.includes(emp.id)}
-                      onCheckedChange={() => toggleSelect(emp.id)}
+                    className="cursor-pointer ring-0 focus:ring-0"
+                      checked={selected.includes(emp.employee_id)}
+                      onCheckedChange={() => toggleSelect(emp.employee_id)}
                     />
                   </TableCell>
                   <TableCell>{emp.employee_id}</TableCell>
@@ -141,18 +215,26 @@ export default function EmployeeTable() {
                   <TableCell>{emp.email}</TableCell>
                   <TableCell>{emp.department}</TableCell>
                   <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="text-red-500">
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <AlertDialog  >
+                      
+                          <AlertDialogTrigger asChild>
+                         <Trash2 className="h-4 w-4 text-red-500 cursor-pointer" />
+                          </AlertDialogTrigger>
+                     
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle  >Are you sure?</AlertDialogTitle >
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently
+                            delete employee details from the database.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
+                          <AlertDialogAction variant="destructive" onClick={() => handleDelete([emp.employee_id])} className="cursor-pointer">Delete</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </TableCell>
                 </TableRow>
               ))

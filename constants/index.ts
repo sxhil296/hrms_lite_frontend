@@ -56,10 +56,30 @@ export const navItems = [
   },
   {
     name: "Add Employee",
-    href: "/add-employee",
+    href: "/employees/add",
   },
   {
     name: "Attendance",
-    href: "/attendance",
+    href: "/employees/attendance",
   },
 ];
+
+
+export const AttendanceStatus = [
+  {
+    name:"Present",
+    value:"present"
+  },
+  {
+    name:"Absent",
+    value:"absent"
+  },
+  {
+    name:"Half Day",
+    value:"half_day"
+  },
+  {
+    name:"Leave",
+    value:"leave"
+  }
+]

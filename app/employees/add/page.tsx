@@ -1,9 +1,10 @@
-import EmployeeTable from "@/components/employee/EmployeeTable";
+import AddEmployeeForm from "@/components/employee/AddEmployeeForm";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
-export default function EmployeePage() {
+export default function AddEmployeePage() {
   return (
     <div className="p-6">
+      {/* add shadcn breadcrumb */}
       <Breadcrumb className="mb-10">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -11,11 +12,11 @@ export default function EmployeePage() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Employee Directory</BreadcrumbPage>
+            <BreadcrumbPage>Add Employee</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <EmployeeTable />
+      <AddEmployeeForm />
     </div>
   );
 }

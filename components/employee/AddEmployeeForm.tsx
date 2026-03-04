@@ -87,7 +87,7 @@ export default function AddEmployeeForm() {
         setDepartment("");
         toast.dismiss();
         toast.success("Employee added successfully");
-        router.push("/employees");
+        // router.push("/employees");
       }
     } catch {
       toast.dismiss();
