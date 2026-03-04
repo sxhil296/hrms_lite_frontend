@@ -27,7 +27,7 @@ export const Dropdown = ({
                     value={value}
                  
                   >
-                    <SelectTrigger >
+                    <SelectTrigger className="w-full sm:w-[180px]">
                       <SelectValue placeholder={placeholder} />
                     </SelectTrigger>
                     <SelectContent>

@@ -75,41 +75,57 @@ export const AttendanceForm = ({ refreshAttendance }: AttendanceFormProps) => {
   };
 
   return (
-    <div className="space-y-5 w-full">
-      <h2 className="text-2xl font-bold">Mark Attendance</h2>
+   <div className="space-y-4 w-full">
 
- 
-      <div className="flex justify-start items-center gap-4">
-             {/* Date Picker */}
-    
-      <DatePicker date={date} setDate={setDate} disabled={{ after: new Date() }} triggerClassName="w-[200px] justify-start text-left"/>
-      
-      {/* Employee ID */}
-      <Input
-        placeholder="Employee ID (e.g. EMP00001)"
-        value={employeeId}
-        maxLength={8}
-        className="min-w-[220px] max-w-[220px]"
-        onChange={(e) => setEmployeeId(e.target.value.toUpperCase())}
+  <h2 className="text-2xl font-bold">Mark Attendance</h2>
+
+  <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-4">
+
+
+    <DatePicker
+      date={date}
+      setDate={setDate}
+      disabled={{ after: new Date() }}
+      triggerClassName="w-full sm:w-[200px] justify-start text-left"
+    />
+
+
+    <Input
+      placeholder="Employee ID (e.g. EMP00001)"
+      value={employeeId}
+      maxLength={8}
+      className="w-full sm:w-[220px]"
+      onChange={(e) => setEmployeeId(e.target.value.toUpperCase())}
+    />
+
+
+    <div className="w-full sm:w-[180px]">
+      <Dropdown
+        value={status}
+        setValue={setStatus}
+        options={AttendanceStatus}
+        placeholder="Status"
+        showAllOption={false}
       />
+    </div>
 
-     
+    <Button
+      type="button"
+      variant="default"
+      onClick={handleSubmit}
+      disabled={loading}
+      className="w-full sm:w-auto"
+    >
+      {loading ? (
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      ) : (
+        "Mark Attendance"
+      )}
+    </Button>
 
-      {/* Attendance Status dropdown */}
-   
-       <Dropdown value={status} setValue={setStatus} options={AttendanceStatus} placeholder="Status" showAllOption={false}/>
-     
-         <Button
-        type="button"
-        variant="default"
-        onClick={handleSubmit}
-        disabled={loading}
-      >
-        {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Mark Attendance"}
-      </Button>
-      </div>
-   
-      </div>
+  </div>
+
+</div>
   
   );
 }

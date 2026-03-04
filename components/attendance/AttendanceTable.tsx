@@ -67,35 +67,47 @@ const router = useRouter();
  
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Attendance Table</h2>
+  <div className="space-y-4 w-full">
 
-      <div className="w-full flex justify-between items-center">
-        <div className="flex items-center gap-4">
-         
+  <h2 className="text-2xl font-bold">Attendance Table</h2>
 
-          <Input
-            placeholder="Search employees..."
-            className="max-w-sm"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
+  <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center">
 
-      
-      <DatePicker date={date} setDate={setDate } triggerClassName="w-[200px] justify-start text-left"/>
+    <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 w-full">
 
-          
+      <Input
+        placeholder="Search employees..."
+        className="w-full sm:max-w-sm"
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+      />
 
 
-
-          <Dropdown value={status} setValue={setStatus} options={AttendanceStatus} placeholder="Filter By Status" />
-        </div>
-      </div>
+      <DatePicker
+        date={date}
+        setDate={setDate}
+        triggerClassName="w-full sm:w-[200px] justify-start text-left"
+      />
 
   
+      <div className="w-full sm:w-[200px]">
+        <Dropdown
+          value={status}
+          setValue={setStatus}
+          options={AttendanceStatus}
+          placeholder="Filter By Status"
+        />
+      </div>
 
-     <div className="border rounded-xl overflow-hidden bg-white">
-         <Table>
+    </div>
+
+  </div>
+
+
+  <div className="border rounded-xl overflow-hidden bg-white">
+    <div className="w-full overflow-x-auto">
+      <Table className="min-w-[600px]">
+
         <TableHeader>
           <TableRow>
             <TableHead>Employee ID</TableHead>
@@ -120,55 +132,67 @@ const router = useRouter();
             </TableRow>
           ) : (
             attendance.map((attend) => (
-              <TableRow key={`${attend.employee_id}-${attend.date}`} className="cursor-pointer hover:bg-amber-100" onClick={() => router.push(`/employees/${attend.employee_id}`)}>
+              <TableRow
+                key={`${attend.employee_id}-${attend.date}`}
+                className="cursor-pointer hover:bg-amber-100"
+                onClick={() => router.push(`/employees/${attend.employee_id}`)}
+              >
                 <TableCell>{attend.employee_id}</TableCell>
                 <TableCell>{attend.employee.full_name}</TableCell>
                 <TableCell>{formatDate(attend.date)}</TableCell>
+
                 <TableCell>
                   <Badge
-                  className={cn(
-"capitalize",
-                    attend.status === "present" && "bg-green-500",
-                    attend.status === "absent" && "bg-red-500",
-                    attend.status === "half_day" && "bg-yellow-500",
-                    attend.status === "leave" && "bg-blue-500"
-                  )}
+                    className={cn(
+                      "capitalize",
+                      attend.status === "present" && "bg-green-500",
+                      attend.status === "absent" && "bg-red-500",
+                      attend.status === "half_day" && "bg-yellow-500",
+                      attend.status === "leave" && "bg-blue-500"
+                    )}
                   >
-                    {attend.status === "half_day" ? "Half Day" : attend.status}
+                    {attend.status === "half_day"
+                      ? "Half Day"
+                      : attend.status}
                   </Badge>
                 </TableCell>
+
               </TableRow>
             ))
           )}
         </TableBody>
-      </Table>
-     </div>
-        {/* Pagination */}
-           <div className="flex justify-end items-center gap-4">
-             <Button
-               variant="outline"
-               size="sm"
-               disabled={page === 1 || loading}
-               onClick={() => setPage(page - 1)}
-             >
-               Previous
-             </Button>
-     
-             <span className="text-sm text-muted-foreground">
-               Page {page} of {totalPages || 1}
-             </span>
-     
-             <Button
-               variant="outline"
-               size="sm"
-               disabled={page === totalPages || loading}
-               onClick={() => setPage(page + 1  )}
-             >
-               Next
-             </Button>
-           </div>
 
-   
+      </Table>
     </div>
+  </div>
+
+
+  <div className="flex  justify-between sm:justify-end items-center gap-3">
+
+    <Button
+      variant="outline"
+      size="sm"
+      disabled={page === 1 || loading}
+      onClick={() => setPage(page - 1)}
+    >
+      Previous
+    </Button>
+
+    <span className="text-sm text-muted-foreground">
+      Page {page} of {totalPages || 1}
+    </span>
+
+    <Button
+      variant="outline"
+      size="sm"
+      disabled={page === totalPages || loading}
+      onClick={() => setPage(page + 1)}
+    >
+      Next
+    </Button>
+
+  </div>
+
+</div>
   );
 };

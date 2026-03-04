@@ -56,14 +56,14 @@ export default function EmployeePage() {
         <p className="text-gray-500">Employee Name: <span className="font-semibold text-primary">{employee?.full_name}</span></p>    
 
         <p className="text-gray-500 mt-1">
-          Employee ID: <span className="font-semibold text-primary">{employee?.employee_id}</span>
+           ID: <span className="font-semibold text-primary">{employee?.employee_id}</span>
         </p>
     
         <p className="text-gray-500">
-          Employee Email: <span className="font-semibold text-primary">{employee?.email}</span>
+           Email: <span className="font-semibold text-primary">{employee?.email}</span>
         </p>
       </div>
-      <div className="flex gap-4 justify-between items-center">
+      <div className="flex gap-4 flex-col sm:flex-row justify-between items-center">
      <StatCard title="Total Present" value={attendanceSummary?.total_present} titleClassName="text-green-500"/>
      <StatCard title="Total Absent" value={attendanceSummary?.total_absent} titleClassName="text-red-500"/>
      <StatCard title="Total Leave" value={attendanceSummary?.total_leaves} titleClassName="text-blue-500"/>
