@@ -131,9 +131,9 @@ const router = useRouter();
               </TableCell>
             </TableRow>
           ) : (
-            attendance.map((attend) => (
+            attendance.map((attend, index) => (
               <TableRow
-                key={`${attend.employee_id}-${attend.date}`}
+                key={index}
                 className="cursor-pointer hover:bg-amber-100"
                 onClick={() => router.push(`/employees/${attend.employee_id}`)}
               >

@@ -75,7 +75,7 @@ export default function AddEmployeeForm() {
         email,
         department,
       });
-      console.log("Employee created:", res);
+   
 
       if (!res.success) {
         toast.dismiss();

@@ -42,7 +42,7 @@ export default function EmployeePage() {
 
   if (loading) return <Loading />;
 
-  console.log("employee", employee);
+  
 
   return (
     <div className="p-6 space-y-10">

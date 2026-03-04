@@ -120,7 +120,7 @@ if(res.success) {
   };
 
 
-  console.log("selected", selected);
+
 
   return (
   <div className="space-y-4">

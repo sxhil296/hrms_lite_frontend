@@ -40,8 +40,8 @@ const [totalPages, setTotalPages] = useState(1);
         return;
       }
 
-      setAttendance(res.data);
-      setTotalPages(res.totalPages);
+      setAttendance(res?.data);
+      setTotalPages(res?.meta?.totalPages);
     } catch {
       setError("Failed to fetch attendance");
     } finally {
@@ -64,7 +64,7 @@ const [totalPages, setTotalPages] = useState(1);
     fetchAttendance();
   }, [page, limit, debouncedSearch, status, date]);
 
-  console.log("attendance", attendance, totalPages);
+
 
   return (
     <div className="space-y-8">
