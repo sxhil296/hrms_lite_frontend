@@ -96,6 +96,8 @@ const router = useRouter();
           setValue={setStatus}
           options={AttendanceStatus}
           placeholder="Filter By Status"
+          showAllOption={true}
+          allOptionText="All Statuses"
         />
       </div>
 

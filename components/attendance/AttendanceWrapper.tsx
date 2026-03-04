@@ -26,7 +26,14 @@ const [totalPages, setTotalPages] = useState(1);
     setLoading(true);
     setError(null);
 
+
+
     try {
+      if(status === "all"){
+        setStatus("");
+        setPage(1);
+        
+      }
       const res = await getAllAttendance(
         page,
         limit,

@@ -55,6 +55,7 @@ export default function EmployeeTable() {
       setLoading(true);
       if(department === "all") {
         setDepartment("");
+        setPage(1);
       }
       const res = await getAllEmployees(search, page, LIMIT, department);
 
