@@ -121,11 +121,13 @@ const router = useRouter();
 
         <TableBody>
           {loading ? (
-            <TableRow>
-              <TableCell colSpan={4}>
-                <Skeleton className="h-10 w-full" />
-              </TableCell>
-            </TableRow>
+              [...Array(6)].map((_, i) => (
+                         <TableRow key={i}>
+                           <TableCell colSpan={4}>
+                             <Skeleton className="h-6 w-full rounded-md" />
+                           </TableCell>
+                         </TableRow>
+                       ))
           ) : attendance.length === 0 ? (
             <TableRow>
               <TableCell colSpan={4} className="h-24 text-center">

@@ -226,9 +226,6 @@ if(res.success) {
                 className="cursor-pointer hover:bg-amber-100"
               >
                 <TableCell
-                  onClick={() =>
-                    router.push(`/employees/${emp.employee_id}`)
-                  }
                 >
                   <Checkbox
                     className="cursor-pointer ring-0 focus:ring-0"

@@ -3,7 +3,7 @@ import { BreadCrumbCustom } from "@/components/general/BreadCrumbCustom";
 
 export default function AddEmployeePage() {
   return (
-    <div className="p-6 space-y-10">
+    <div className="p-6 space-y-10 max-w-7xl mx-auto">
 
       <BreadCrumbCustom title="Employees" href="/employees" currentTitle="Add Employee" />
       <AddEmployeeForm />
