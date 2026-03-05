@@ -135,29 +135,29 @@ const router = useRouter();
               </TableCell>
             </TableRow>
           ) : (
-            attendance.map((attend, index) => (
+            attendance?.map((attend, index) => (
               <TableRow
                 key={index}
                 className="cursor-pointer hover:bg-amber-100"
-                onClick={() => router.push(`/employees/${attend.employee_id}`)}
+                onClick={() => router.push(`/employees/${attend?.employee_id}`)}
               >
-                <TableCell>{attend.employee_id}</TableCell>
-                <TableCell>{attend.employee.full_name}</TableCell>
+                <TableCell>{attend?.employee_id}</TableCell>
+                <TableCell>{attend?.employee?.full_name}</TableCell>
                 <TableCell>{formatDate(attend.date)}</TableCell>
 
                 <TableCell>
                   <Badge
                     className={cn(
                       "capitalize",
-                      attend.status === "present" && "bg-green-500",
-                      attend.status === "absent" && "bg-red-500",
-                      attend.status === "half_day" && "bg-yellow-500",
-                      attend.status === "leave" && "bg-blue-500"
+                      attend?.status === "present" && "bg-green-500",
+                      attend?.status === "absent" && "bg-red-500",
+                      attend?.status === "half_day" && "bg-yellow-500",
+                      attend?.status === "leave" && "bg-blue-500"
                     )}
                   >
-                    {attend.status === "half_day"
+                    {attend?.status === "half_day"
                       ? "Half Day"
-                      : attend.status}
+                      : attend?.status}
                   </Badge>
                 </TableCell>
 

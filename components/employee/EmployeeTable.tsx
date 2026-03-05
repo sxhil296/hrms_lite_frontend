@@ -191,7 +191,7 @@ if(res.success) {
             <TableHead className="w-10">
               <Checkbox
                 checked={
-                  employees.length > 0 && selected.length === employees.length
+                  employees?.length > 0 && selected.length === employees?.length
                 }
                 onCheckedChange={toggleSelectAll}
               />
@@ -213,7 +213,7 @@ if(res.success) {
                 </TableCell>
               </TableRow>
             ))
-          ) : employees.length === 0 ? (
+          ) : employees?.length === 0 ? (
             <TableRow>
               <TableCell colSpan={6} className="text-center py-6">
                 No employees found.
@@ -222,50 +222,50 @@ if(res.success) {
           ) : (
             employees.map((emp) => (
               <TableRow
-                key={emp.id}
+                key={emp?.id}
                 className="cursor-pointer hover:bg-amber-100"
               >
                 <TableCell
                 >
                   <Checkbox
                     className="cursor-pointer ring-0 focus:ring-0"
-                    checked={selected.includes(emp.employee_id)}
+                    checked={selected.includes(emp?.employee_id)}
                     onCheckedChange={() =>
-                      toggleSelect(emp.employee_id)
+                      toggleSelect(emp?.employee_id)
                     }
                   />
                 </TableCell>
 
                 <TableCell
                   onClick={() =>
-                    router.push(`/employees/${emp.employee_id}`)
+                    router.push(`/employees/${emp?.employee_id}`)
                   }
                 >
-                  {emp.employee_id}
+                  {emp?.employee_id}
                 </TableCell>
 
                 <TableCell
                   onClick={() =>
-                    router.push(`/employees/${emp.employee_id}`)
+                    router.push(`/employees/${emp?.employee_id}`)
                   }
                 >
-                  {emp.full_name}
+                  {emp?.full_name}
                 </TableCell>
 
                 <TableCell
                   onClick={() =>
-                    router.push(`/employees/${emp.employee_id}`)
+                    router.push(`/employees/${emp?.employee_id}`)
                   }
                 >
-                  {emp.email}
+                  {emp?.email}
                 </TableCell>
 
                 <TableCell
                   onClick={() =>
-                    router.push(`/employees/${emp.employee_id}`)
+                    router.push(`/employees/${emp?.employee_id}`)
                   }
                 >
-                  {emp.department}
+                  {emp?.department}
                 </TableCell>
 
                 <TableCell className="text-right">
@@ -294,7 +294,7 @@ if(res.success) {
                         <AlertDialogAction
                           variant="destructive"
                           onClick={() =>
-                            handleDelete([emp.employee_id])
+                            handleDelete([emp?.employee_id])
                           }
                           className="cursor-pointer"
                         >
