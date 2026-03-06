@@ -4,7 +4,7 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Header } from "@/components/layout/Header";
 import { Toaster } from "@/components/ui/sonner";
-
+import { TanStackQueryProvider } from "@/providers/tanStackQueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +32,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TooltipProvider>
-          <Header />
-          {children}
-          <Toaster position="top-center" richColors />
-        </TooltipProvider>
+        <TanStackQueryProvider>
+          <TooltipProvider>
+            <Header />
+            {children}
+            <Toaster position="top-center" richColors />
+          </TooltipProvider>
+        </TanStackQueryProvider>
       </body>
     </html>
   );
